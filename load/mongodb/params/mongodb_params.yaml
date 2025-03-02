@@ -6,4 +6,10 @@ Mongo:
     transactions_routes_decoded: 
       collection_name: "uniswap_router_transactions_decoded"
       primary_key: []
+    Tokens_prices: 
+      collection_name: "historical_tokens_prices"
+      primary_key: []
+    Tokens_info: 
+      collection_name: "swaps_tokens_metadata"
+      primary_key: []
 

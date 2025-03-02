@@ -1,6 +1,6 @@
 from extract.extract_tokens import main as extract_tokens_main
-from load.mongodb.mongodb import load_from_mongo
-from helpers.utils import get_value_tokens_list,get_path_tokens_list
+from load.mongodb.mongodb import load_to_mongo,load_from_mongo
+from helpers.utils import prepare_for_mongo,get_value_tokens_list,get_path_tokens_list
 import logging
 
 def setup_logging():
@@ -14,6 +14,8 @@ def setup_logging():
 
 
 def main():
+    TOKENS_PRICES_COLLECTION_KEY = "Tokens_prices"
+    TOKENS_INFO_COLLECTION_KEY = "Tokens_info"
     DECODED_DATA_COLLECTION_KEY = "transactions_routes_decoded"
 
     setup_logging()
@@ -30,6 +32,10 @@ def main():
 
             logging.info(f"Extracting token infos for {len(tokens_path_list)} tokens.")
             infos = extract_tokens_main(tokens_path_list, mode="infos")
+
+            logging.info("Loading extracted data into MongoDB.")
+            load_to_mongo(prepare_for_mongo(prices), TOKENS_PRICES_COLLECTION_KEY)
+            load_to_mongo(infos, TOKENS_INFO_COLLECTION_KEY)
 
             logging.info("ETL Pipeline Completed Successfully.")
 
